@@ -145,3 +145,80 @@ Server-side Anthropic prompt (PRD §6.1):
 - [ ] Admin analytics charts
 - [ ] Email digest for Security Desk
 - [ ] Offline queue for Snap & Upload
+
+
+---
+
+## 🤖 Gemini Vision API Setup
+
+### 1. Get a free API key
+
+Go to [Google AI Studio](https://aistudio.google.com/app/apikey) and create a key.
+Gemini 1.5 Flash is **free** up to 15 RPM / 1M TPM on the free tier.
+
+### 2. Add to your environment
+
+```bash
+cp .env.example .env.local
+# Edit .env.local and replace the placeholder:
+VITE_GEMINI_API_KEY=AIzaSy...your_key_here
+```
+
+**⚠️ Never commit `.env.local` to git.** It's already in `.gitignore`.
+
+### 3. Run the app
+
+```bash
+npm install
+npm run dev
+```
+
+When you Snap & Upload an item, the real Gemini 1.5 Flash model will:
+- Identify the item category and colours
+- Detect the brand if a logo is visible
+- Generate a plain-English description
+- Create a verification question based on a non-obvious detail in the photo
+- Return confidence scores per field
+
+### Fallback behaviour
+
+| Condition | Behaviour |
+|---|---|
+| No `VITE_GEMINI_API_KEY` | Silently uses mock data — app fully functional |
+| Network error | Falls back to mock, logs to console |
+| Image too dark/blurry | Shows `image_unreadable` error, lets finder retake |
+| 403 Invalid key | Falls back to mock, logs error to console |
+| 429 Rate limit | Falls back to mock, logs warning |
+
+### How the API call works
+
+```
+File (from camera or upload)
+  └─ fileToBase64()               reads File as DataURL, strips prefix
+       └─ Gemini REST API
+            model: gemini-1.5-flash
+            inlineData: { mimeType, data: base64 }
+            systemInstruction: PRD §6.1 system prompt
+            userPrompt: PRD §6.1 JSON schema + rules
+            responseMimeType: "application/json"   ← forces clean JSON output
+              └─ validateResult()                  clamps, fills defaults
+                   └─ buildTagsFromResult()        maps to TagReview chips
+```
+
+### Why `fetch` instead of the `@google/generative-ai` SDK?
+
+Both work. The `fetch` approach has **zero bundle overhead** since Vite tree-shakes nothing
+from the SDK that isn't used. The `@google/generative-ai` package is still listed in
+`package.json` so you can swap to the SDK with a one-file change if preferred:
+
+```js
+// SDK alternative (optional)
+import { GoogleGenerativeAI } from '@google/generative-ai'
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY)
+const model = genAI.getGenerativeModel({
+  model: 'gemini-1.5-flash',
+  systemInstruction: SYSTEM_PROMPT,
+})
+const result = await model.generateContent([{ inlineData: { mimeType, data: base64 } }, USER_PROMPT])
+const text = result.response.text()
+```
