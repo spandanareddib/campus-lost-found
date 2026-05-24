@@ -1,0 +1,30 @@
+{
+  "name": "Lost & Found — Westfield University",
+  "short_name": "Lost & Found",
+  "description": "Campus lost and found registry with AI-powered item tagging",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F6F2",
+  "theme_color": "#111d5e",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "categories": ["utilities", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Report Found Item",
+      "short_name": "Snap & Upload",
+      "description": "Quickly upload a found item",
+      "url": "/?page=upload",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Search Items",
+      "short_name": "Search",
+      "description": "Search for your lost item",
+      "url": "/?page=search",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    }
+  ]
+}

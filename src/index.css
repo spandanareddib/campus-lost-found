@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-ink font-body;
+    background-image: radial-gradient(ellipse at 20% 0%, rgba(79, 110, 247, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(249, 115, 22, 0.03) 0%, transparent 60%);
+    min-height: 100vh;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  /* ── Bento card ── */
+  .bento-card {
+    @apply bg-surface-card rounded-bento shadow-card border border-surface-muted/60 transition-all duration-200;
+  }
+  .bento-card-hover {
+    @apply bento-card hover:shadow-card-hover hover:-translate-y-0.5;
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    @apply text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-tertiary font-body flex items-center gap-1.5;
+  }
+
+  /* ── Display heading ── */
+  .display-heading {
+    @apply font-display font-semibold text-brand-900 leading-tight;
+  }
+
+  /* ── Status chips ── */
+  .status-chip {
+    @apply inline-flex items-center gap-1 rounded-pill px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide;
+  }
+  .status-unclaimed {
+    @apply status-chip bg-warning-bg text-warning border border-warning-border/50;
+  }
+  .status-pending {
+    @apply status-chip bg-brand-50 text-brand-600 border border-brand-200/50;
+  }
+  .status-claimed {
+    @apply status-chip bg-success-bg text-success border border-success-border/50;
+  }
+  .status-collected {
+    @apply status-chip bg-surface-muted text-ink-secondary border border-surface-muted;
+  }
+
+  /* ── Tag chips ── */
+  .tag-chip {
+    @apply inline-flex items-center gap-1.5 rounded-pill px-3 py-1 text-sm font-medium font-body cursor-pointer select-none transition-all duration-150 animate-tag-pop;
+  }
+  .tag-high {
+    @apply tag-chip bg-success-bg text-success border border-success-border/60 hover:brightness-95;
+  }
+  .tag-mid {
+    @apply tag-chip bg-warning-bg text-warning border border-warning-border/60 hover:brightness-95;
+  }
+  .tag-low {
+    @apply tag-chip bg-danger-bg text-danger border border-danger-border/60 hover:brightness-95;
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    @apply flex items-center justify-center gap-2 rounded-inner bg-brand-900 text-white font-semibold text-sm px-5 py-3 transition-all duration-200 hover:bg-brand-700 hover:-translate-y-0.5 hover:shadow-card-hover active:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0;
+  }
+  .btn-accent {
+    @apply flex items-center justify-center gap-2 rounded-inner bg-accent text-white font-semibold text-sm px-5 py-3 transition-all duration-200 hover:bg-accent-dark hover:-translate-y-0.5 hover:shadow-fab active:translate-y-0;
+  }
+  .btn-ghost {
+    @apply flex items-center justify-center gap-2 rounded-inner bg-transparent text-ink-secondary font-medium text-sm px-4 py-2.5 transition-all duration-150 hover:bg-surface-subtle hover:text-ink;
+  }
+  .btn-outline {
+    @apply flex items-center justify-center gap-2 rounded-inner bg-surface-card text-ink font-medium text-sm px-4 py-2.5 border border-surface-muted transition-all duration-150 hover:border-brand-400 hover:text-brand-600;
+  }
+
+  /* ── Input ── */
+  .input-field {
+    @apply w-full rounded-inner border border-surface-muted bg-surface-subtle px-4 py-2.5 text-sm text-ink font-body placeholder:text-ink-disabled transition-all duration-150 outline-none focus:border-brand-400 focus:bg-white focus:shadow-glow;
+  }
+
+  /* ── Shimmer skeleton ── */
+  .skeleton {
+    @apply rounded-inner bg-surface-muted animate-shimmer;
+    background-image: linear-gradient(90deg, #eceae4 25%, #f4f3ef 50%, #eceae4 75%);
+    background-size: 200% 100%;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Custom scrollbar */
+  .scrollbar-hidden {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Blur overlay for images */
+  .blur-overlay {
+    backdrop-filter: blur(2px);
+  }
+
+  /* Stagger animation delays */
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.10s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.20s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.30s; }
+}
