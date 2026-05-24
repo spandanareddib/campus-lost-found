@@ -177,11 +177,11 @@ export async function analyseImage(imageFile) {
       },
     ],
    generationConfig: {
-      temperature:        0.1,
-      top_p:              0.8,
-      top_k:              40,
-      max_output_tokens:  512,
-      response_mime_type: 'application/json',
+      temperature:     0.1,
+      topP:            0.8,
+      topK:            40,
+      maxOutputTokens: 512,
+      // Removed response_mime_type because it is causing 400 errors
     },
     safetySettings: SAFETY_SETTINGS,
   }
